@@ -1,0 +1,307 @@
+exp 1,3
+wsl, cd ~, mkdir e1, echo "Hello Git!" > file.txt, git add file.txt, git commit -m "Initial commit", cat file.txt
+
+wsl, cd~, mkdir e3, cd e3,git init, git branch -M main, echo""> file.txt, git add file.txt, git commit -m "initial commit", git checkout branch -b branch1, echo"b1" >> file.txt, add file.txt, git commit -m "commit 1", git checkout main,git merge branch1,git checkout branch -b branch2, echo"b2" >> index.html, git add file.txt, git commit -m "commit 2", git checkout main, git merge branch2, ls
+,cat file.txt
+
+exp2
+wsl
+ssh-keygen
+cat ~/ssh .pub [copy and add to GitHub new ssh key]
+ssh-T
+git@github com
+git config --global --list
+git config --global user.name "Samruddhi"
+git config --global user.email"clgmail"
+git config -global--list
+mkdir exp2
+cd exp2, git init, git branch -M main
+echo "Hello from exp2"> File.txt, git add file.txt, git commit -m "first commit"
+git remote add origen git@github.com. [GitHub ssh link]
+git push -u origin main
+cat file.txt
+
+exp4
+mkdir exp4
+cd exp 4, git init, git branch -M main
+echo "Hello from main" > file.txt, git add file.txt, git commit -m "inttial commit",
+git remote origin......[GitHub repo link ssh], git push -u origin main.
+git checkout -b branch1, echo "Hello from branch" >> file.txt, git add file.txt, git commit -m "Branch1 commit"
+git push origin branch1
+Github compare & Pull request Branch, Create PR
+git checkout main
+git checkout -b branch2
+echo "Hello from branch2" >> file.txt, git add file.txt git commit -m "Branch 2 commit", git push origin branch 2
+Github compare & Pull request Branch, Create PR
+CONFLICT
+resolve, mark aas resolve commit merge , merge pull request
+
+Exp 5
+mkdir e5,cd e5,mkdir -p .github/workflows, code ., +deploy.yml
+
+name: Basic GitHub Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Display Success Message
+        run: echo "Build Successful!"
+
+git add .
+git commit -m "workflows"
+git remote origin......
+git push -u origin main
+
+
+exp6 cicd
+mkdir exp6, cd exp6, git init, git branch -M main
+echo "<h1>Hello CI/CD Deployment</h1>" > index.html
+code ., .github/workflows/deploy.yml,
+
+name: CI/CD Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy message
+        run: echo "Build & Deployment Successful"
+git add ., git commit -m "ci cd workflow", git remote add origin <your-repo-url>, git push -u origin main
+
+
+exp 7
+cd your_project_folder, code .
+│── math_operations.py
+│── test_math_operations.py
+│── .github/workflows/python-tests.yml
+
+math_operations.py
+python
+def add(a, b):
+return a + b
+
+def subtract(a, b):
+return a – b
+
+test_math_operations.py
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+from math_operations import add, subtract
+def test_add():
+    assert add(2, 3) == 5
+def test_subtract():
+    assert subtract(10, 4) == 6
+
+pip install pytest (Terminal of VS)
+
+mkdir -p .github/workflows/python-tests.yml
+
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+
+    - name: Run Tests
+      run: pytest
+
+git init, git add ., git branch -M main, git commit -m "Added automated testing with GitHub Actions", git remote add origin <your-repo-url>, git push -u origin main
+
+
+
+exp8 open docker desktop
+mkdir exp8, cd exp8, code .,
+-index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Docker Web App</title>
+</head>
+<body>
+    <h1>Hello from Docker!</h1>
+</body>
+</html>
+
+-Dockerfile
+FROM nginx:latest
+
+COPY index.html /usr/share/nginx/html/index.html
+
+<>bash
+docker build -t mywebapp .
+docker images
+docker run -d -p 8080:80 mywebapp
+http://localhost:8080
+
+
+exp9
+exp9/
+│
+├── app.py
+├── requirements.txt
+├── Dockerfile
+└── docker-compose.yml
+mkdir exp9, cd exp9, code .
+
+app.py
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Docker Compose Working!"
+
+app.run(host='0.0.0.0', port=5000)
+
+requirements.txt
+flask
+
+Dockerfile
+FROM python:3.12
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+CMD ["python", "app.py"]
+
+docker-compose.yml
+services:
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+<>bash
+docker compose up --build -d
+docker ps
+http://localhost:5000
+
+exp 10
+mkdir exp10, cd exp10, sudo apt update, sudo apt install ansible -y, ansible --version
+nano hosts
+[webservers]
+localhost ansible_connection=local
+
+nano nginx.yml
+---
+- name: Install and start Nginx
+  hosts: webservers
+  become: yes
+
+  tasks:
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+ansible-playbook -i hosts nginx.yml
+
+open
+http://localhost
+
+
+
+Exp 1: Git Initialization & Commit
+1. What is Git? Git is a distributed version control system used to track code changes.
+2. What does `git init` do? It creates a new local Git repository.
+
+Exp 2: Push Local Project to GitHub 
+3. What is GitHub? GitHub is a cloud platform for hosting Git repositories.
+4. What does `git push` do? Uploads local commits to remote repository.
+
+Exp 3: Git Branching & Merging
+5. What is a branch in Git? A separate line of development in a repository.
+6. What is merging? Combining changes from one branch into another.
+
+Exp 4: GitHub Actions Basic Workflow 
+7. What is GitHub Actions? CI/CD automation service provided by GitHub.
+8. What is a workflow file? A YAML file defining automation steps.
+
+Exp 5: GitHub Actions on Push
+9. What triggers a workflow? Events like push, pull request, etc.
+10. What is CI? Continuous Integration — automatic testing/building after code changes.
+
+Exp 6: GitHub Actions with HTML/Webpage
+11. What is `index.html`? Main webpage file of a website.
+12. Why use YAML in GitHub Actions? To define workflow configuration.
+
+Exp 7: Automated Testing using Pytest 
+13. What is Pytest? A Python testing framework.
+14. Why did pytest show “0 tests collected”? Because test file/function naming convention was incorrect.
+
+Exp 8: Dockerfile & Docker Image
+15. What is Docker? Docker is a containerization platform.
+16. What is a Dockerfile? A file containing instructions to build Docker image.
+
+Exp 9: Docker Compose
+17. What is Docker Compose? Docker Compose is used to manage multiple containers together.
+18. What is the purpose of `docker-compose.yml`? Defines services, ports, and container configuration.
+
+Exp 10: Ansible Playbook
+19. What is Ansible? Ansible is used for configuration management and automation.
+20. What is a playbook in Ansible? A YAML file containing automation tasks.
